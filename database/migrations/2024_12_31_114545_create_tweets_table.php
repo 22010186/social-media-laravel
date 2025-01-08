@@ -11,10 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('tweets', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('image');
-            $table->string('handle');
+            $table->uuid('id')->primary();
             $table->text('tweet');
             $table->string('file')->nullable();
             $table->boolean('isVideo')->nullable();
@@ -22,6 +19,7 @@ return new class extends Migration {
             $table->integer('retweets');
             $table->integer('likes');
             $table->integer('analytics');
+            $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -6,18 +6,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-//Route::get('/', function () {
-// return Inertia::render('Welcome', [
-// 'canLogin' => Route::has('login'),
-// 'canRegister' => Route::has('register'),
-// 'laravelVersion' => Application::VERSION,
-// 'phpVersion' => PHP_VERSION,
-// ]);
-//});
-
 Route::get('/', [TweetController::class, 'index']);
 
-Route::controller(TweetController::class)->middleware(['auth', 'verified'])->group(function () {
+Route::controller(TweetController::class)->middleware(['auth'])->group(function () {
     Route::post('/tweets', 'store');
     Route::delete('/tweets/{tweetId}', 'destroy');
 });

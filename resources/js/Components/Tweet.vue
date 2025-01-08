@@ -1,7 +1,7 @@
 <template>
     <div class="min-w-[60px]">
         <img
-            :src="tweet?.image"
+            :src="tweet.user.avatar ?? '/images/avatar.png'"
             class="rounded-full m-2 mt-3 w-[50px]"
             alt=""
         />
@@ -11,9 +11,9 @@
             class="font-extrabold flex items-center justify-between mt-0.5 mb-1.5"
         >
             <div class="flex items-center">
-                <p>{{ tweet?.name }}</p>
+                <p>{{ tweet.user?.name ?? "User" }}</p>
                 <span class="font-light text-sm text-gray-500 pl-2">{{
-                    tweet?.handle
+                    tweet.user?.handle
                 }}</span>
             </div>
             <div class="hover:bg-gray-800 rounded-full cursor-pointer relative">

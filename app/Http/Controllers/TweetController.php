@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tweet;
+use App\Services\FileService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
 
 class TweetController extends Controller
 {
@@ -14,7 +18,15 @@ class TweetController extends Controller
     public function index()
     {
         return Inertia::render('Welcome', [
-            'tweets' => Tweet::orderBy('created_at', 'desc')->get(),
+            'tweets' => Tweet::with([
+                'user' => function ($query) {
+                    $query->select('id', 'name', 'avatar');
+                }
+            ])->orderBy('created_at', 'desc')->get(),
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+            'laravelVersion' => Application::VERSION,
+            'phpVersion' => PHP_VERSION,
         ]);
     }
 
@@ -31,36 +43,15 @@ class TweetController extends Controller
      */
     public function store(Request $request)
     {
-        $file = null;
-        $extension = null;
-        $fileName = null;
-        $path = null;
-
-        if ($request->hasFile('file')) {
-            $request->validate([
-                'file' => 'required|image|mimes:jpg,png,jpeg,gif,svg,mp4|max:2048',
-            ]);
-            $file = $request->file('file');
-            $extension = $file->getClientOriginalExtension();
-            $fileName = time() . '.' . $extension;
-            $extension == 'mp4' ? $path = '/videos/' : $path = '/images/';
-        }
-
         $tweet = new Tweet();
-        $tweet->name = 'Aaron Alvarez';
-        $tweet->handle = '@aaronalvarez';
-        $tweet->image = 'https://picsum.photos/id/237/100';
+        $tweet = (new FileService)->addFile($tweet, $request);
         $tweet->tweet = $request->tweet;
+        $tweet->user_id = Auth::user()->id;
+
         $tweet->comments = rand(0, 500);
         $tweet->retweets = rand(0, 500);
         $tweet->likes = rand(0, 500);
         $tweet->analytics = rand(0, 500);
-
-        if ($fileName) {
-            $tweet->file = $path . $fileName;
-            $tweet->isVideo = $extension == 'mp4' ? true : false;
-            $file->move(public_path($path), $fileName);
-        }
 
         $tweet->save();
     }

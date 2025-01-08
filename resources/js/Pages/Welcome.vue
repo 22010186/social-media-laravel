@@ -1,6 +1,5 @@
 <script setup>
-import { ref } from "vue";
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, usePage } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import Tweet from "@/Components/Tweet.vue";
 
