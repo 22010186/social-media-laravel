@@ -8,7 +8,7 @@ class FileService
     public function addFile($model, $request)
     {
         $request->validate([
-            'file' => 'required|image|mimes:jpg,png,jpeg,gif,svg,mp4|max:2048',
+            'file' => 'required|mimes:jpg,png,jpeg,gif,svg,mp4|max:10240',
         ]);
         $file = $request->file('file');
         $extension = $file->getClientOriginalExtension();

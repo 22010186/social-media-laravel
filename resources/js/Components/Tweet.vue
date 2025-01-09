@@ -2,7 +2,7 @@
     <div class="min-w-[60px]">
         <img
             :src="tweet.user.avatar ?? '/images/avatar.png'"
-            class="rounded-full m-2 mt-3 w-[50px]"
+            class="rounded-full m-2 mt-3 size-[50px] object-cover"
             alt=""
         />
     </div>
@@ -13,7 +13,7 @@
             <div class="flex items-center">
                 <p>{{ tweet.user?.name ?? "User" }}</p>
                 <span class="font-light text-sm text-gray-500 pl-2">{{
-                    tweet.user?.handle
+                    takeHandle(tweet.user?.name ?? "User")
                 }}</span>
             </div>
             <div class="hover:bg-gray-800 rounded-full cursor-pointer relative">
@@ -91,7 +91,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { Link } from "@inertiajs/vue3";
 import HeartOutline from "vue-material-design-icons/HeartOutline.vue";
 import ChartBar from "vue-material-design-icons/ChartBar.vue";
@@ -106,5 +106,16 @@ defineProps({
 
 const openOptions = ref(false);
 
-onMounted(() => {});
+function takeHandle(name) {
+    // Xóa dấu tiếng Việt
+    const removeDiacritics = (str) => {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    };
+
+    // Xử lý chuỗi: loại bỏ dấu, chuyển về chữ thường, xóa khoảng trắng
+    const cleanName = removeDiacritics(name.trim().toLowerCase());
+    const handle = "@" + cleanName.replace(/\s+/g, "");
+
+    return handle;
+}
 </script>

@@ -40,6 +40,26 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit');
     }
 
+    public function avatar(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        ]);
+
+        $file = $request->file('image');
+
+        $extension = $file->getClientOriginalExtension();
+        $fileName = '/images/' . time() . '.' . $extension;
+
+        $file->move(public_path('/images/'), $fileName);
+
+        $request->user()->avatar = $fileName;
+
+        $request->user()->save();
+
+        return Redirect::route('profile.edit');
+    }
+
     /**
      * Delete the user's account.
      */

@@ -15,7 +15,9 @@
                 <MenuItemComponent iconString="Explore" />
                 <MenuItemComponent iconString="Notifications" />
                 <MenuItemComponent iconString="Messages" />
-                <MenuItemComponent iconString="Profile" />
+                <Link href="/profile">
+                    <MenuItemComponent iconString="Profile" />
+                </Link>
 
                 <button
                     @click="handleOpenCreateTweetOverlay()"
@@ -221,7 +223,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { usePage, router } from "@inertiajs/vue3";
+import { usePage, router, Link } from "@inertiajs/vue3";
 import Magnify from "vue-material-design-icons/Magnify.vue";
 import DotsHorizontal from "vue-material-design-icons/DotsHorizontal.vue";
 import Feather from "vue-material-design-icons/Feather.vue";

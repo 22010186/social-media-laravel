@@ -28,8 +28,8 @@
         <div class="w-full flex">
             <div class="ml-3.5 mr-2">
                 <img
-                    class="rounded-full w-[55px]"
-                    :src="auth.user.avatar ?? '/images/avatar.png'"
+                    class="rounded-full size-[55px] object-cover"
+                    :src="auth.user.avatar"
                     alt=""
                 />
             </div>
@@ -93,7 +93,7 @@
                                     type="file"
                                     id="fileUpload"
                                     hidden
-                                    @change="getFile"
+                                    @change="getFile($event)"
                                     accept="image/*,video/*"
                                 />
                             </div>
@@ -129,7 +129,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { router, usePage } from "@inertiajs/vue3";
+import { router, usePage, useForm } from "@inertiajs/vue3";
 import Close from "vue-material-design-icons/Close.vue";
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 import Earth from "vue-material-design-icons/Earth.vue";
@@ -138,12 +138,16 @@ import FileGifBox from "vue-material-design-icons/FileGifBox.vue";
 import Emoticon from "vue-material-design-icons/Emoticon.vue";
 import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue";
 
+const form = useForm({
+    tweet: "",
+    file: null,
+});
+const auth = usePage().props.auth;
+
 const tweet = ref("");
 const textarea = ref(null);
-const file = ref(null);
 const showUpload = ref("");
 const uploadType = ref("");
-const auth = usePage().props.auth;
 
 const emits = defineEmits(["close"]);
 
@@ -154,25 +158,26 @@ const textareaInput = (e) => {
 };
 
 const getFile = (e) => {
-    file.value = e.target.files[0];
-    showUpload.value = URL.createObjectURL(file.value);
-    uploadType.value = file.value.name.split(".").pop();
+    form.file = e.target.files[0];
+    uploadType.value = form.file.name.split(".").pop();
+    showUpload.value = URL.createObjectURL(e.target.files[0]);
 };
 
 const closeMessageBox = () => {
     emits("close");
-    tweet.value = "";
     showUpload.value = "";
     uploadType.value = "";
 };
 
 const addTweet = () => {
-    if (!tweet.value) return;
-
-    let data = new FormData();
-    data.append("tweet", tweet.value);
-    data.append("file", file.value);
-    router.post("/tweets", data);
-    closeMessageBox();
+    form.tweet = tweet.value;
+    form.post("/tweets", {
+        onSuccess: () => {
+            router.visit("/");
+        },
+        onFinish: () => {
+            closeMessageBox();
+        },
+    });
 };
 </script>

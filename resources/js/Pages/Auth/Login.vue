@@ -33,21 +33,18 @@ const submit = () => {
 
         <form @submit.prevent="submit()">
             <div class="p-8 rounded-2xl">
-                <h2 class="text-gray-800 text-center text-2xl font-bold">
-                    Sign in
-                </h2>
+                <h2 class="text-center text-2xl font-bold">Sign in</h2>
+                <hr />
                 <div class="mt-8 space-y-4">
                     <div>
-                        <label class="text-gray-800 text-sm mb-2 block"
-                            >Email</label
-                        >
+                        <label class="text-sm mb-2 block">Email</label>
                         <div class="relative flex items-center">
                             <input
                                 name="email"
                                 type="email"
                                 v-model="form.email"
                                 required
-                                class="w-full text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
+                                class="w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
                                 placeholder="Enter email"
                             />
                             <svg
@@ -73,16 +70,14 @@ const submit = () => {
                     </div>
 
                     <div>
-                        <label class="text-gray-800 text-sm mb-2 block"
-                            >Password</label
-                        >
+                        <label class="text-sm mb-2 block">Password</label>
                         <div class="relative flex items-center">
                             <input
                                 name="password"
                                 type="password"
                                 v-model="form.password"
                                 required
-                                class="w-full text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
+                                class="w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
                                 placeholder="Enter password"
                             />
                             <svg
@@ -115,10 +110,7 @@ const submit = () => {
                                 type="checkbox"
                                 class="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                             />
-                            <label
-                                for="remember-me"
-                                class="ml-3 block text-sm text-gray-800"
-                            >
+                            <label for="remember-me" class="ml-3 block text-sm">
                                 Remember me
                             </label>
                         </div>
@@ -142,7 +134,7 @@ const submit = () => {
                             Sign in
                         </button>
                     </div>
-                    <p class="text-gray-800 text-sm !mt-8 text-center">
+                    <p class="text-sm !mt-8 text-center">
                         Don't have an account?
                         <Link
                             href="/register"
