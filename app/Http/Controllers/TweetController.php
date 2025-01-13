@@ -44,7 +44,9 @@ class TweetController extends Controller
     public function store(Request $request)
     {
         $tweet = new Tweet();
-        $tweet = (new FileService)->addFile($tweet, $request);
+        if (!is_null($request->file('file'))) {
+            $tweet = (new FileService)->addFile($tweet, $request);
+        }
         $tweet->tweet = $request->tweet;
         $tweet->user_id = Auth::user()->id;
 

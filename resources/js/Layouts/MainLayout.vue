@@ -76,7 +76,7 @@
                 </div>
 
                 <main
-                    class="absolute top-0 z-0 h-full overflow-auto scrollbar-hide"
+                    class="absolute top-0 z-0 h-full w-full overflow-auto scrollbar-hide"
                 >
                     <div class="mt-[126px]" />
                     <slot />
