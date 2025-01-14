@@ -110,7 +110,7 @@
                         </div>
                         <button
                             @click="addTweet()"
-                            :disabled="!tweet"
+                            :disabled="!tweet || form.processing"
                             class="hidden md:block font-extrabold text-base p-1.5 px-4 rounded-full cursor-pointer"
                             :class="
                                 tweet
